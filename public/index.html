@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js App Tester & Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="logo">
+        <div class="status-indicator online"></div>
+        <h1>Node.js WebApp Verification Tool</h1>
+      </div>
+      <p class="subtitle">動作確認・APIテスト・サーバーレスポンス検証ダッシュボード</p>
+    </header>
+
+    <main class="grid-layout">
+      <!-- サーバー & システムステータス -->
+      <section class="card status-card">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z"/></svg>
+          サーバー＆システム状態
+        </h2>
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <span class="label">ステータス</span>
+            <span class="value badge-success" id="val-status">接続中...</span>
+          </div>
+          <div class="metric-box">
+            <span class="label">稼働時間 (Uptime)</span>
+            <span class="value" id="val-uptime">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="label">Node.js バージョン</span>
+            <span class="value" id="val-node-version">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="label">プラットフォーム</span>
+            <span class="value" id="val-platform">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="label">メモリ使用量 (Heap)</span>
+            <span class="value" id="val-memory">-</span>
+          </div>
+          <div class="metric-box">
+            <span class="label">クライアント IP</span>
+            <span class="value" id="val-client-ip">-</span>
+          </div>
+        </div>
+        <button id="btn-refresh-status" class="btn btn-secondary">
+          ステータス手動更新
+        </button>
+      </section>
+
+      <!-- API 動作テストパネル -->
+      <section class="card test-card">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14E13 18 13 16 15 16 15 18zM19 14H5V8h14v6z"/></svg>
+          動作確認テスト実行
+        </h2>
+
+        <div class="test-controls">
+          <div class="control-group">
+            <label>1. 生存確認 (GET /api/health)</label>
+            <button id="btn-test-health" class="btn btn-primary">Health API テスト</button>
+          </div>
+
+          <div class="control-group">
+            <label>2. Echo 送受信テスト (POST /api/echo)</label>
+            <div class="input-row">
+              <input type="text" id="echo-input" value="Hello Node.js Server!" placeholder="テストメッセージ">
+              <button id="btn-test-echo" class="btn btn-primary">Echo 送信</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label>3. ステータスコード / 遅延テスト (/api/status/:code)</label>
+            <div class="input-row multi">
+              <select id="status-code-select">
+                <option value="200">200 OK</option>
+                <option value="201">201 Created</option>
+                <option value="400">400 Bad Request</option>
+                <option value="401">401 Unauthorized</option>
+                <option value="404">404 Not Found</option>
+                <option value="500">500 Internal Error</option>
+                <option value="503">503 Service Unavailable</option>
+              </select>
+              <input type="number" id="delay-input" placeholder="遅延(ms)" value="0" min="0" max="10000">
+              <button id="btn-test-status" class="btn btn-warning">実行</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- レスポンス出力ログエリア -->
+      <section class="card response-card">
+        <div class="card-header">
+          <h2>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            最新APIレスポンス結果
+          </h2>
+          <span id="response-meta" class="response-meta">未実行</span>
+        </div>
+        <pre><code id="response-output">// テストを実行するとここにJSONレスポンスが表示されます...</code></pre>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>LinuxQuest DummyApp • Node.js Verification Web Interface</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

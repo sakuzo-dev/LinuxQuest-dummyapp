@@ -1,0 +1,16 @@
+{
+  "name": "linuxquest-dummyapp",
+  "version": "1.0.0",
+  "description": "Simple Node.js Web App for Server & API Verification",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
